@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eeeeee"
+    android:orientation="vertical" >
+    
+    <EditText 
+        android:layout_margin="20dp"
+        android:hint="有什么见闻，心情吗？"
+        android:layout_width="match_parent"
+    	android:layout_height="100dp"
+    	android:background="@android:color/white"
+        />
+    
+    <TextView 
+        android:layout_margin="20dp"
+        android:gravity="bottom"
+        android:text="徐汇区广元西路55号"
+        android:layout_width="match_parent"
+    	android:layout_height="20dp"
+    	android:background="@android:color/white"
+        />
+    
+    <Button 
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:padding="10dp"
+    	android:layout_margin="20dp"
+    	android:layout_gravity="right"
+    	android:text="提交"
+        />
+
+</LinearLayout>
