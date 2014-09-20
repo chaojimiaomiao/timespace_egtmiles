@@ -1,23 +1,27 @@
 package com.ckt.vas.miles.ui.activities;
 
-import cn.juhe.locate.JHLocateClient;
-import cn.juhe.locate.JHLocateListener;
-import cn.juhe.locate.JHLocateOption;
-import cn.juhe.locate.JHLocation;
-
-import com.avos.avoscloud.AVGeoPoint;
-import com.avos.avoscloud.AVObject;
-import com.ckt.vas.miles.R;
-import com.ckt.vas.miles.dto.Constants;
-
 import android.app.Fragment;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import cn.juhe.locate.JHLocateClient;
+import cn.juhe.locate.JHLocateListener;
+import cn.juhe.locate.JHLocateOption;
+import cn.juhe.locate.JHLocation;
+
+import com.avos.avoscloud.AVAnalytics;
+import com.avos.avoscloud.AVGeoPoint;
+import com.avos.avoscloud.AVOSCloud;
+import com.avos.avoscloud.AVObject;
+import com.baixing.widgets.CommonDlg;
+import com.ckt.vas.miles.R;
+import com.ckt.vas.miles.dto.Constants;
 
 public class LocationRecordFragment extends Fragment {
 	private JHLocateClient jhLocateClient;
@@ -31,10 +35,30 @@ public class LocationRecordFragment extends Fragment {
         locationTextView = (TextView) rootView.findViewById(R.id.id_location);
         editText = (EditText) rootView.findViewById(R.id.id_record);
         Button locateButton = (Button) rootView.findViewById(R.id.id_locate_button);
+        Button fabuButton = (Button) rootView.findViewById(R.id.id_fabu);
+        fabuButton.setOnClickListener(new Button.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (TextUtils.isEmpty(editText.getText().toString())) {
+					new CommonDlg(getActivity(), "沉默有时也是最好的回忆", "你确定不说话吗？", new CommonDlg.DialogAction(){
+						@Override
+						public void doAction(CommonDlg dialog){
+							dialog.cancel();
+							createAVObject();
+						}
+					}, true).show();
+				} else {
+					createAVObject();
+				}
+			}
+        	
+        });
         locateButton.setOnClickListener(new Button.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
+				jhLocateClient.stop();
 				jhLocateClient.start();
 			}
         	
@@ -45,6 +69,7 @@ public class LocationRecordFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		AVOSCloud.initialize(getActivity(), Constants.App_ID, Constants.App_KEY);
 		getLocation();
 	}
 	
@@ -68,8 +93,17 @@ public class LocationRecordFragment extends Fragment {
 	}
 	
 	private void createAVObject() {
-		AVObject placeObject = new AVObject();
+	    
+	    Log.e("", "what?");
+	    
+	    AVAnalytics.trackAppOpened(getActivity().getIntent());
+		AVObject placeObject = new AVObject("LocationRecord");
+		if (point == null) {
+			point = new AVGeoPoint(31.1979581757, 121.4350390538);
+		}
 		placeObject.put("location", point);
+		placeObject.put("record", editText.getText().toString());
+		placeObject.saveInBackground();
 	}
 	
 	AVGeoPoint point;
@@ -77,8 +111,11 @@ public class LocationRecordFragment extends Fragment {
 	private class MyJHBaseStaListener implements JHLocateListener {
 
 		@Override
-		public void onReceiveLocation(JHLocation loaction) {
+		public void onReceiveLocation(JHLocation location) {
+			locationTextView.setText(location.getAddress());
+			point = new AVGeoPoint(location.getLat(), location.getLng());
 			
+			parseLocate(location);
 		}
 
 		@Override

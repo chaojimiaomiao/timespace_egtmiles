@@ -70,7 +70,7 @@ public class MainActivity extends Activity {
 
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
-    private String[] mPlanetTitles = {"历史足迹", "我的足迹"};
+    private String[] mPlanetTitles = {"历史足迹", "我的足迹", "周边"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,8 +172,10 @@ public class MainActivity extends Activity {
     	Fragment fragment;
     	if (position == 0) {//历史足迹
             fragment = new MainViewFragment();
-		} else {//我的足迹
+		} else if(position == 1) {//我的足迹
 			fragment = new LocationRecordFragment();
+		} else {
+			fragment = new NearRecordsFragment();
 		}
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();

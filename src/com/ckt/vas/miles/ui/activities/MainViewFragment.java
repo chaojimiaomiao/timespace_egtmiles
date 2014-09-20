@@ -17,6 +17,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVGeoPoint;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVQuery;
 import com.ckt.vas.miles.R;
 import com.ckt.vas.miles.dto.ActivityMessage;
 import com.ckt.vas.miles.ui.adapters.PublicActivityAdapter;
@@ -170,4 +174,5 @@ public class MainViewFragment extends Fragment implements OnPositionChangedListe
         return rtnAni;
     }
 
+	
 }
