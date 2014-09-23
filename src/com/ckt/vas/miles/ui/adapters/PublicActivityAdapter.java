@@ -117,21 +117,47 @@ public class PublicActivityAdapter extends BaseAdapter {
                 // content layout
                 LinearLayout contentLayout = (LinearLayout) convertView
                         .findViewById(R.id.feed_post_body);
-                // Text
-                if (ActivityMessage.MESSAGE_TYPE_TEXT == type) {
-                    big.setVisibility(View.GONE);
+                //personal
+                if (ActivityMessage.MESSAGE_TYPE_MY == type) {
+                	big.setVisibility(View.GONE);
                     smal.setVisibility(View.VISIBLE);
                     View view = LayoutInflater.from(context).inflate(
-                            R.layout.moment_thought_partial, null);
+                            R.layout.moment_thought_partial2, null);
 
+                    //message.getBody()
                     TextView thought_main = (TextView) view.findViewById(R.id.thought_main);
-                    // thought_main.setText(message.getBody());
+                    
                     String txtstr = String.format(TEXT_FORMAT, message.getAuthorName(),
                             message.getStoreName());
 
                     Spanned spt = Html.fromHtml(txtstr);
 
                     thought_main.setText(spt);
+                    
+                    TextView comment = (TextView) view.findViewById(R.id.comment_body);
+                    comment.setText(message.getBody());
+
+                    contentLayout.addView(view);
+				}
+                // Text
+                else if (ActivityMessage.MESSAGE_TYPE_TEXT == type) {
+                    big.setVisibility(View.GONE);
+                    smal.setVisibility(View.VISIBLE);
+                    View view = LayoutInflater.from(context).inflate(
+                            R.layout.moment_thought_partial, null);
+
+                    //message.getBody()
+                    TextView thought_main = (TextView) view.findViewById(R.id.thought_main);
+                    
+                    String txtstr = String.format(TEXT_FORMAT, message.getAuthorName(),
+                            message.getStoreName());
+
+                    Spanned spt = Html.fromHtml(txtstr);
+
+                    thought_main.setText(spt);
+                    if (!"真不错".equals(message.getBody())) {
+                        thought_main.setText(message.getBody());
+					}
 
                     contentLayout.addView(view);
 

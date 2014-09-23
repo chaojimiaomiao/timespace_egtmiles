@@ -3,6 +3,8 @@ package com.ckt.vas.miles.dto;
 import java.util.Date;
 
 public class ActivityMessage {
+	// My
+	public static final int MESSAGE_TYPE_MY = 0;
 	// Text
 	public static final int MESSAGE_TYPE_TEXT = 1;
 	// image
@@ -32,6 +34,23 @@ public class ActivityMessage {
 	//empty used for loading header
 	public ActivityMessage(){
 		
+	}
+	
+	/**
+	 * // my
+	 * 
+	 * @param authorAvatar
+	 * @param storeName
+	 * @param body
+	 */
+	public ActivityMessage(int authorAvatar, String storeName, String body,long realtime) {
+		this.type = 0;
+
+		this.authorAvatar = authorAvatar;
+		this.body = body;
+		this.authorName = "icy";
+		this.storeName = storeName;
+		this.date = new Date(realtime);
 	}
 	
 	/**
